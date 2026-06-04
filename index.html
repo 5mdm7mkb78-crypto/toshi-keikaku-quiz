@@ -27,12 +27,56 @@
   .tab.active { border-color: var(--accent2); background: var(--accent2); color: white; font-weight: 500; }
   .section { display: none; }
   .section.active { display: block; }
-  .article-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-  .article-tag { display: inline-block; background: var(--accent2); color: white; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 0.05em; }
-  .article-title { font-family: 'Noto Serif JP', serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
-  .article-body { font-size: 0.85rem; line-height: 1.8; color: #333; }
-  .article-body p { margin-bottom: 8px; }
+
+  /* 記事一覧 */
+  .article-list { display: flex; flex-direction: column; gap: 10px; }
+  .article-list-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .article-list-item:hover { border-color: var(--accent2); transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+  .article-list-left { display: flex; flex-direction: column; gap: 5px; }
+  .article-tag { display: inline-block; background: var(--accent2); color: white; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; width: fit-content; }
+  .article-list-title { font-family: 'Noto Serif JP', serif; font-size: 0.95rem; font-weight: 700; line-height: 1.4; }
+  .article-list-arrow { color: var(--accent2); font-size: 1.2rem; flex-shrink: 0; margin-left: 10px; }
+
+  /* 記事詳細 */
+  .article-detail { display: none; }
+  .article-detail.active { display: block; }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--accent2);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-bottom: 16px;
+    padding: 4px 0;
+  }
+  .back-btn:hover { opacity: 0.7; }
+  .article-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .article-card .article-tag { margin-bottom: 10px; }
+  .article-card-title { font-family: 'Noto Serif JP', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; line-height: 1.5; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+  .article-body { font-size: 0.87rem; line-height: 1.9; color: #333; }
+  .article-body p { margin-bottom: 10px; }
   .article-body strong { color: var(--accent2); }
+  .article-nav { display: flex; gap: 10px; margin-top: 16px; }
+  .article-nav-btn { flex: 1; padding: 12px; border: 2px solid var(--accent2); border-radius: 8px; background: white; color: var(--accent2); font-family: 'Noto Sans JP', sans-serif; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+  .article-nav-btn:hover { background: var(--accent2); color: white; }
+  .article-nav-btn:disabled { border-color: var(--border); color: var(--muted); cursor: default; background: white; }
+
+  /* 問題演習 */
   .quiz-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .quiz-status { font-size: 0.8rem; color: var(--muted); }
   .score-badge { background: var(--accent2); color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; }
@@ -53,8 +97,7 @@
   .feedback-box.correct { display: block; background: #e8f5e9; border-left: 4px solid var(--correct); }
   .feedback-box.wrong { display: block; background: #fce4ec; border-left: 4px solid var(--wrong); }
   .feedback-box .fb-title { font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; }
-  .next-btn { width: 100%; margin-top: 14px; padding: 14px; background: var(--accent2); color: white; border: none; border-radius: 10px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; display: none; transition: opacity 0.2s; }
-  .next-btn:active { opacity: 0.8; }
+  .next-btn { width: 100%; margin-top: 14px; padding: 14px; background: var(--accent2); color: white; border: none; border-radius: 10px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; display: none; }
   .restart-btn { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 10px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; margin-top: 12px; }
 </style>
 </head>
@@ -69,10 +112,28 @@
     <button class="tab" onclick="switchTab('quiz')">✏️ 問題演習</button>
   </div>
 
-  <!-- 解説記事 -->
-  <div id="article-section" class="section active" id="article-section"></div>
+  <!-- 解説記事タブ -->
+  <div id="article-section" class="section active">
+    <!-- 一覧表示 -->
+    <div id="article-list-view">
+      <div class="article-list" id="article-list"></div>
+    </div>
+    <!-- 詳細表示 -->
+    <div id="article-detail-view" style="display:none;">
+      <button class="back-btn" onclick="showArticleList()">← 記事一覧に戻る</button>
+      <div class="article-card">
+        <span class="article-tag" id="detail-tag"></span>
+        <div class="article-card-title" id="detail-title"></div>
+        <div class="article-body" id="detail-body"></div>
+      </div>
+      <div class="article-nav">
+        <button class="article-nav-btn" id="prev-btn" onclick="navigateArticle(-1)">← 前の記事</button>
+        <button class="article-nav-btn" id="next-article-btn" onclick="navigateArticle(1)">次の記事 →</button>
+      </div>
+    </div>
+  </div>
 
-  <!-- 問題演習 -->
+  <!-- 問題演習タブ -->
   <div id="quiz-section" class="section">
     <div class="quiz-controls">
       <span class="quiz-status" id="quiz-status"></span>
@@ -84,8 +145,7 @@
 
 <script>
 // ============================================================
-// 📖 解説記事データ
-// タグ・タイトル・本文を自由に編集・追加してください
+// 📖 解説記事データ（自由に追加・編集してください）
 // ============================================================
 const ARTICLES = [
   {
@@ -118,44 +178,27 @@ const ARTICLES = [
 ];
 
 // ============================================================
-// ✏️ 問題データ
-// difficulty: "易" / "普通" / "難"
-// answer: 正解の選択肢番号（0〜3）
+// ✏️ 問題データ（自由に追加・編集してください）
 // ============================================================
 const QUESTIONS = [
   {
     difficulty: "易",
     question: "都市計画法において、市街化区域と市街化調整区域に区分することを何というか。",
-    choices: [
-      "地域地区の指定",
-      "区域区分（線引き）",
-      "都市施設の決定",
-      "地区計画の策定"
-    ],
+    choices: ["地域地区の指定", "区域区分（線引き）", "都市施設の決定", "地区計画の策定"],
     answer: 1,
     explanation: "区域区分（線引き）とは、都市計画区域を市街化区域と市街化調整区域に区分することです。市街化区域は既に市街地を形成している区域および概ね10年以内に優先的かつ計画的に市街化を図る区域、市街化調整区域は市街化を抑制すべき区域です。"
   },
   {
     difficulty: "普通",
     question: "2019年の都市計画法改正で新たに追加された用途地域はどれか。",
-    choices: [
-      "準住居地域",
-      "田園住居地域",
-      "近隣商業地域",
-      "準工業地域"
-    ],
+    choices: ["準住居地域", "田園住居地域", "近隣商業地域", "準工業地域"],
     answer: 1,
     explanation: "田園住居地域は2019年（平成31年）に追加された用途地域で、農業の利便の増進を図りつつ、これと調和した低層住宅に係る良好な住居の環境を保護するための地域です。これにより用途地域は13種類となりました。"
   },
   {
     difficulty: "普通",
     question: "立地適正化計画において、医療・福祉・商業等の都市機能を誘導する区域を何というか。",
-    choices: [
-      "居住誘導区域",
-      "都市機能誘導区域",
-      "特定用途誘導地区",
-      "都市再生緊急整備地域"
-    ],
+    choices: ["居住誘導区域", "都市機能誘導区域", "特定用途誘導地区", "都市再生緊急整備地域"],
     answer: 1,
     explanation: "都市機能誘導区域は、医療・福祉・商業等の都市機能を都市の中心拠点や生活拠点に誘導・集約することにより、これらの各種サービスの効率的な提供を図る区域です。居住誘導区域は人口密度を維持するために居住を誘導する区域です。"
   },
@@ -188,6 +231,7 @@ const QUESTIONS = [
 // ============================================================
 // 以下はアプリの動作コード（通常は編集不要）
 // ============================================================
+let currentArticleIdx = 0;
 let currentQ = 0;
 let score = 0;
 let total = 0;
@@ -200,21 +244,47 @@ function switchTab(tab) {
   document.getElementById('quiz-section').classList.toggle('active', tab==='quiz');
 }
 
-function renderArticles() {
-  const container = document.getElementById('article-section');
-  container.innerHTML = ARTICLES.map(a => `
-    <div class="article-card">
-      <span class="article-tag">${a.tag}</span>
-      <div class="article-title">${a.title}</div>
-      <div class="article-body">${a.body.map(p => `<p>${p}</p>`).join('')}</div>
+// --- 記事一覧 ---
+function renderArticleList() {
+  const list = document.getElementById('article-list');
+  list.innerHTML = ARTICLES.map((a, i) => `
+    <div class="article-list-item" onclick="openArticle(${i})">
+      <div class="article-list-left">
+        <span class="article-tag">${a.tag}</span>
+        <div class="article-list-title">${a.title}</div>
+      </div>
+      <span class="article-list-arrow">›</span>
     </div>
   `).join('');
 }
 
+function openArticle(idx) {
+  currentArticleIdx = idx;
+  const a = ARTICLES[idx];
+  document.getElementById('detail-tag').textContent = a.tag;
+  document.getElementById('detail-title').textContent = a.title;
+  document.getElementById('detail-body').innerHTML = a.body.map(p => `<p>${p}</p>`).join('');
+  document.getElementById('prev-btn').disabled = idx === 0;
+  document.getElementById('next-article-btn').disabled = idx === ARTICLES.length - 1;
+  document.getElementById('article-list-view').style.display = 'none';
+  document.getElementById('article-detail-view').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function showArticleList() {
+  document.getElementById('article-list-view').style.display = 'block';
+  document.getElementById('article-detail-view').style.display = 'none';
+}
+
+function navigateArticle(dir) {
+  const next = currentArticleIdx + dir;
+  if (next >= 0 && next < ARTICLES.length) openArticle(next);
+}
+
+// --- 問題演習 ---
 function renderQuestion() {
   const container = document.getElementById('quiz-container');
   document.getElementById('quiz-status').textContent = `第 ${currentQ + 1} 問 / 全 ${QUESTIONS.length} 問`;
-
   if (currentQ >= QUESTIONS.length) {
     container.innerHTML = `
       <div class="quiz-card" style="text-align:center;">
@@ -225,7 +295,6 @@ function renderQuestion() {
       </div>`;
     return;
   }
-
   const q = QUESTIONS[currentQ];
   container.innerHTML = `
     <div class="quiz-card">
@@ -245,30 +314,28 @@ function renderQuestion() {
 
 function selectAnswer(idx) {
   const q = QUESTIONS[currentQ];
-  const btns = document.querySelectorAll('.choice-btn');
-  btns.forEach(b => b.disabled = true);
+  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
   const feedback = document.getElementById('feedback');
-  const nextBtn = document.getElementById('next-btn');
   if (idx === q.answer) {
-    btns[idx].classList.add('selected-correct');
+    document.querySelectorAll('.choice-btn')[idx].classList.add('selected-correct');
     feedback.className = 'feedback-box correct';
     feedback.innerHTML = `<div class="fb-title">✅ 正解！</div>${q.explanation}`;
     score++;
   } else {
-    btns[idx].classList.add('selected-wrong');
-    btns[q.answer].classList.add('show-correct');
+    document.querySelectorAll('.choice-btn')[idx].classList.add('selected-wrong');
+    document.querySelectorAll('.choice-btn')[q.answer].classList.add('show-correct');
     feedback.className = 'feedback-box wrong';
     feedback.innerHTML = `<div class="fb-title">❌ 不正解</div>正解は「${String.fromCharCode(65+q.answer)}. ${q.choices[q.answer]}」です。<br><br>${q.explanation}`;
   }
   total++;
   document.getElementById('score-badge').textContent = `${score} / ${total}`;
-  nextBtn.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'block';
 }
 
 function nextQuestion() { currentQ++; renderQuestion(); }
 function restartQuiz() { currentQ = 0; score = 0; total = 0; document.getElementById('score-badge').textContent = '0 / 0'; renderQuestion(); }
 
-renderArticles();
+renderArticleList();
 renderQuestion();
 </script>
 </body>
