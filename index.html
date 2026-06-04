@@ -16,442 +16,220 @@
     --correct: #27ae60;
     --wrong: #c0392b;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-    padding: 0;
-  }
-
-  /* Header */
-  header {
-    background: var(--accent2);
-    color: white;
-    padding: 16px 20px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  header h1 {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-  header p {
-    font-size: 0.7rem;
-    opacity: 0.75;
-    margin-top: 2px;
-  }
-
-  /* Main */
-  main {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px 16px 80px;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  .tab {
-    flex: 1;
-    padding: 10px;
-    border: 2px solid var(--border);
-    background: white;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--muted);
-  }
-  .tab.active {
-    border-color: var(--accent2);
-    background: var(--accent2);
-    color: white;
-    font-weight: 500;
-  }
-
-  /* Section */
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+  header { background: var(--accent2); color: white; padding: 16px 20px; text-align: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  header h1 { font-family: 'Noto Serif JP', serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.05em; }
+  header p { font-size: 0.7rem; opacity: 0.75; margin-top: 2px; }
+  main { max-width: 600px; margin: 0 auto; padding: 20px 16px 80px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 10px; border: 2px solid var(--border); background: white; border-radius: 8px; font-size: 0.85rem; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.2s; color: var(--muted); }
+  .tab.active { border-color: var(--accent2); background: var(--accent2); color: white; font-weight: 500; }
   .section { display: none; }
   .section.active { display: block; }
-
-  /* Article card */
-  .article-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .article-tag {
-    display: inline-block;
-    background: var(--accent2);
-    color: white;
-    font-size: 0.65rem;
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    letter-spacing: 0.05em;
-  }
-  .article-title {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    line-height: 1.5;
-  }
-  .article-body {
-    font-size: 0.85rem;
-    line-height: 1.8;
-    color: #333;
-  }
+  .article-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .article-tag { display: inline-block; background: var(--accent2); color: white; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 0.05em; }
+  .article-title { font-family: 'Noto Serif JP', serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
+  .article-body { font-size: 0.85rem; line-height: 1.8; color: #333; }
   .article-body p { margin-bottom: 8px; }
   .article-body strong { color: var(--accent2); }
-
-  /* Quiz */
-  .quiz-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .quiz-status {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  .score-badge {
-    background: var(--accent2);
-    color: white;
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-
-  .quiz-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    margin-bottom: 16px;
-  }
-  .quiz-difficulty {
-    display: inline-block;
-    font-size: 0.65rem;
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    letter-spacing: 0.05em;
-  }
-  .diff-easy { background: #e8f5e9; color: #27ae60; }
-  .diff-medium { background: #fff3e0; color: #e67e22; }
-  .diff-hard { background: #fce4ec; color: #c0392b; }
-
-  .quiz-question {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 16px;
-    font-weight: 700;
-  }
-
+  .quiz-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .quiz-status { font-size: 0.8rem; color: var(--muted); }
+  .score-badge { background: var(--accent2); color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; }
+  .quiz-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 16px; }
+  .quiz-difficulty { display: inline-block; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; margin-bottom: 12px; letter-spacing: 0.05em; }
+  .diff-易 { background: #e8f5e9; color: #27ae60; }
+  .diff-普通 { background: #fff3e0; color: #e67e22; }
+  .diff-難 { background: #fce4ec; color: #c0392b; }
+  .quiz-question { font-family: 'Noto Serif JP', serif; font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px; font-weight: 700; }
   .choices { display: flex; flex-direction: column; gap: 10px; }
-  .choice-btn {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    background: white;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.85rem;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1.5;
-    color: var(--ink);
-  }
+  .choice-btn { width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; background: white; font-family: 'Noto Sans JP', sans-serif; font-size: 0.85rem; text-align: left; cursor: pointer; transition: all 0.2s; line-height: 1.5; color: var(--ink); }
   .choice-btn:active { transform: scale(0.98); }
-  .choice-btn.selected-correct {
-    border-color: var(--correct);
-    background: #e8f5e9;
-    color: var(--correct);
-    font-weight: 500;
-  }
-  .choice-btn.selected-wrong {
-    border-color: var(--wrong);
-    background: #fce4ec;
-    color: var(--wrong);
-    font-weight: 500;
-  }
-  .choice-btn.show-correct {
-    border-color: var(--correct);
-    background: #e8f5e9;
-    color: var(--correct);
-  }
+  .choice-btn.selected-correct { border-color: var(--correct); background: #e8f5e9; color: var(--correct); font-weight: 500; }
+  .choice-btn.selected-wrong { border-color: var(--wrong); background: #fce4ec; color: var(--wrong); font-weight: 500; }
+  .choice-btn.show-correct { border-color: var(--correct); background: #e8f5e9; color: var(--correct); }
   .choice-btn:disabled { cursor: default; }
-
-  .feedback-box {
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: 8px;
-    font-size: 0.83rem;
-    line-height: 1.7;
-    display: none;
-  }
-  .feedback-box.correct {
-    display: block;
-    background: #e8f5e9;
-    border-left: 4px solid var(--correct);
-  }
-  .feedback-box.wrong {
-    display: block;
-    background: #fce4ec;
-    border-left: 4px solid var(--wrong);
-  }
-  .feedback-box .fb-title {
-    font-weight: 700;
-    margin-bottom: 6px;
-    font-size: 0.9rem;
-  }
-
-  .next-btn {
-    width: 100%;
-    margin-top: 14px;
-    padding: 14px;
-    background: var(--accent2);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: none;
-    transition: opacity 0.2s;
-  }
+  .feedback-box { margin-top: 14px; padding: 14px; border-radius: 8px; font-size: 0.83rem; line-height: 1.7; display: none; }
+  .feedback-box.correct { display: block; background: #e8f5e9; border-left: 4px solid var(--correct); }
+  .feedback-box.wrong { display: block; background: #fce4ec; border-left: 4px solid var(--wrong); }
+  .feedback-box .fb-title { font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; }
+  .next-btn { width: 100%; margin-top: 14px; padding: 14px; background: var(--accent2); color: white; border: none; border-radius: 10px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; display: none; transition: opacity 0.2s; }
   .next-btn:active { opacity: 0.8; }
-
-  /* Loading */
-  .loading {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent2);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .generate-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 16px;
-    transition: opacity 0.2s;
-  }
-  .generate-btn:active { opacity: 0.8; }
-  .generate-btn:disabled { opacity: 0.5; cursor: default; }
+  .restart-btn { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 10px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; margin-top: 12px; }
 </style>
 </head>
 <body>
-
 <header>
   <h1>都市計画 技術士二次試験対策</h1>
   <p>建設部門 ／ 都市及び地方計画</p>
 </header>
-
 <main>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('article')">📖 解説記事</button>
     <button class="tab" onclick="switchTab('quiz')">✏️ 問題演習</button>
   </div>
 
-  <!-- 記事セクション -->
-  <div id="article-section" class="section active">
-    <button class="generate-btn" id="article-btn" onclick="generateArticles()">AIで解説記事を生成する</button>
-    <div id="article-container">
-      <div style="text-align:center; padding:30px; color:var(--muted); font-size:0.85rem;">
-        上のボタンを押すと、都市計画の重要テーマの解説記事をAIが生成します。
-      </div>
-    </div>
-  </div>
+  <!-- 解説記事 -->
+  <div id="article-section" class="section active" id="article-section"></div>
 
-  <!-- 問題セクション -->
+  <!-- 問題演習 -->
   <div id="quiz-section" class="section">
-    <button class="generate-btn" id="quiz-btn" onclick="generateQuiz()">AIで問題を生成する</button>
     <div class="quiz-controls">
-      <span class="quiz-status" id="quiz-status">問題を生成してください</span>
+      <span class="quiz-status" id="quiz-status"></span>
       <span class="score-badge" id="score-badge">0 / 0</span>
     </div>
-    <div id="quiz-container">
-      <div style="text-align:center; padding:30px; color:var(--muted); font-size:0.85rem;">
-        上のボタンを押すと、一問一答形式の問題をAIが生成します。
-      </div>
-    </div>
+    <div id="quiz-container"></div>
   </div>
 </main>
 
 <script>
-let quizData = [];
+// ============================================================
+// 📖 解説記事データ
+// タグ・タイトル・本文を自由に編集・追加してください
+// ============================================================
+const ARTICLES = [
+  {
+    tag: "都市計画法",
+    title: "都市計画法の基本体系",
+    body: [
+      "都市計画法（1968年制定）は、都市の健全な発展と秩序ある整備を目的とする基本法です。",
+      "法の体系は「<strong>都市計画区域の指定</strong>」「<strong>区域区分（線引き）</strong>」「<strong>地域地区</strong>」「<strong>都市施設</strong>」「<strong>市街地開発事業</strong>」から構成されます。",
+      "技術士試験では、都市計画決定の手続き（都道府県・市町村の権限分担）や、近年の法改正（立地適正化計画など）との関連が頻出です。"
+    ]
+  },
+  {
+    tag: "用途地域",
+    title: "用途地域の種類と規制内容",
+    body: [
+      "用途地域は市街化区域に必ず定める地域地区で、現在<strong>13種類</strong>あります（2019年に田園住居地域が追加）。",
+      "住居系8種・商業系2種・工業系3種に分類され、それぞれ建築できる用途・容積率・建ぺい率が定められています。",
+      "試験では各用途地域で建築可能な用途の判断や、容積率・建ぺい率の計算問題が出題される傾向があります。"
+    ]
+  },
+  {
+    tag: "立地適正化計画",
+    title: "立地適正化計画とコンパクトシティ",
+    body: [
+      "立地適正化計画は2014年の都市再生特別措置法改正により創設された制度で、<strong>居住誘導区域</strong>と<strong>都市機能誘導区域</strong>を設定します。",
+      "人口減少・超高齢社会に対応するため、都市機能と居住をコンパクトに集約し、公共交通と連携した「<strong>コンパクト・プラス・ネットワーク</strong>」の実現を目指します。",
+      "技術士試験では、計画の目的・区域設定の考え方・誘導施策（届出制度等）について問われます。"
+    ]
+  }
+];
+
+// ============================================================
+// ✏️ 問題データ
+// difficulty: "易" / "普通" / "難"
+// answer: 正解の選択肢番号（0〜3）
+// ============================================================
+const QUESTIONS = [
+  {
+    difficulty: "易",
+    question: "都市計画法において、市街化区域と市街化調整区域に区分することを何というか。",
+    choices: [
+      "地域地区の指定",
+      "区域区分（線引き）",
+      "都市施設の決定",
+      "地区計画の策定"
+    ],
+    answer: 1,
+    explanation: "区域区分（線引き）とは、都市計画区域を市街化区域と市街化調整区域に区分することです。市街化区域は既に市街地を形成している区域および概ね10年以内に優先的かつ計画的に市街化を図る区域、市街化調整区域は市街化を抑制すべき区域です。"
+  },
+  {
+    difficulty: "普通",
+    question: "2019年の都市計画法改正で新たに追加された用途地域はどれか。",
+    choices: [
+      "準住居地域",
+      "田園住居地域",
+      "近隣商業地域",
+      "準工業地域"
+    ],
+    answer: 1,
+    explanation: "田園住居地域は2019年（平成31年）に追加された用途地域で、農業の利便の増進を図りつつ、これと調和した低層住宅に係る良好な住居の環境を保護するための地域です。これにより用途地域は13種類となりました。"
+  },
+  {
+    difficulty: "普通",
+    question: "立地適正化計画において、医療・福祉・商業等の都市機能を誘導する区域を何というか。",
+    choices: [
+      "居住誘導区域",
+      "都市機能誘導区域",
+      "特定用途誘導地区",
+      "都市再生緊急整備地域"
+    ],
+    answer: 1,
+    explanation: "都市機能誘導区域は、医療・福祉・商業等の都市機能を都市の中心拠点や生活拠点に誘導・集約することにより、これらの各種サービスの効率的な提供を図る区域です。居住誘導区域は人口密度を維持するために居住を誘導する区域です。"
+  },
+  {
+    difficulty: "難",
+    question: "都市再生特別措置法に基づく「居住誘導区域」の説明として正しいものはどれか。",
+    choices: [
+      "市街化調整区域内に設定することができる",
+      "用途地域が定められていない区域にも設定できる",
+      "市街化区域内において、人口密度を維持するため居住を誘導すべき区域である",
+      "区域外での住宅開発は一切禁止される"
+    ],
+    answer: 2,
+    explanation: "居住誘導区域は市街化区域内において一定の人口密度を維持することで、生活サービスや公共交通の持続的な確保を図る区域です。市街化調整区域には設定できません。また区域外での開発は禁止ではなく、一定規模以上の開発・建築行為に届出義務が課されます。"
+  },
+  {
+    difficulty: "難",
+    question: "地区計画に関する記述として誤っているものはどれか。",
+    choices: [
+      "地区計画は市町村が都市計画として決定する",
+      "地区整備計画では建築物の用途・形態・敷地等の制限を定めることができる",
+      "地区計画は用途地域が定められていない区域には絶対に定めることができない",
+      "地区計画の区域内で建築行為を行う場合、原則として市町村長への届出が必要である"
+    ],
+    answer: 2,
+    explanation: "地区計画は、用途地域が定められていない区域（用途地域外）でも、住宅市街地の開発その他建築物の建築が行われる区域等に定めることができます。したがって「絶対に定めることができない」は誤りです。他の選択肢はいずれも正しい記述です。"
+  }
+];
+
+// ============================================================
+// 以下はアプリの動作コード（通常は編集不要）
+// ============================================================
 let currentQ = 0;
 let score = 0;
 let total = 0;
 
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
+  document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', (i===0&&tab==='article')||(i===1&&tab==='quiz'));
   });
   document.getElementById('article-section').classList.toggle('active', tab==='article');
   document.getElementById('quiz-section').classList.toggle('active', tab==='quiz');
 }
 
-async function callClaude(prompt) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
-  const data = await res.json();
-  return data.content.map(c => c.text || "").join("");
-}
-
-async function generateArticles() {
-  const btn = document.getElementById('article-btn');
-  const container = document.getElementById('article-container');
-  btn.disabled = true;
-  btn.textContent = '生成中...';
-  container.innerHTML = '<div class="loading"><div class="spinner"></div>AIが解説記事を生成しています...</div>';
-
-  const prompt = `技術士二次試験（建設部門・都市及び地方計画）の受験対策として、以下の3つのテーマについて短い解説記事を書いてください。
-
-必ずJSON形式のみで返答してください。余分なテキストや\`\`\`json\`\`\`などは不要です。
-
-[
-  {
-    "tag": "テーマ名（短く）",
-    "title": "記事タイトル",
-    "body": "200字程度の解説本文。重要キーワードは**キーワード**で囲む。改行は\\nで表現。"
-  },
-  ...
-]
-
-テーマ例：都市計画法、用途地域、都市再生、コンパクトシティ、立地適正化計画など から3つ選んでください。`;
-
-  try {
-    const text = await callClaude(prompt);
-    const clean = text.replace(/```json|```/g, "").trim();
-    const articles = JSON.parse(clean);
-    container.innerHTML = articles.map(a => `
-      <div class="article-card">
-        <span class="article-tag">${a.tag}</span>
-        <div class="article-title">${a.title}</div>
-        <div class="article-body">${a.body.split('\\n').map(line =>
-          `<p>${line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`
-        ).join('')}</div>
-      </div>
-    `).join('');
-    btn.textContent = '別のテーマを生成する';
-    btn.disabled = false;
-  } catch(e) {
-    container.innerHTML = '<div class="loading">エラーが発生しました。再度お試しください。</div>';
-    btn.textContent = 'AIで解説記事を生成する';
-    btn.disabled = false;
-  }
-}
-
-async function generateQuiz() {
-  const btn = document.getElementById('quiz-btn');
-  const container = document.getElementById('quiz-container');
-  btn.disabled = true;
-  btn.textContent = '生成中...';
-  container.innerHTML = '<div class="loading"><div class="spinner"></div>AIが問題を生成しています...</div>';
-
-  const prompt = `技術士二次試験（建設部門・都市及び地方計画）の一問一答問題を3問作成してください。
-
-必ずJSON形式のみで返答してください。余分なテキストや\`\`\`json\`\`\`などは不要です。
-
-[
-  {
-    "difficulty": "易" または "普通" または "難",
-    "question": "問題文",
-    "choices": ["選択肢A", "選択肢B", "選択肢C", "選択肢D"],
-    "answer": 0,
-    "explanation": "解説文（150字程度）"
-  },
-  ...
-]
-
-answerは正解の選択肢のインデックス（0〜3）です。難易度をバラけさせてください。`;
-
-  try {
-    const text = await callClaude(prompt);
-    const clean = text.replace(/```json|```/g, "").trim();
-    quizData = JSON.parse(clean);
-    currentQ = 0;
-    score = 0;
-    total = 0;
-    updateScoreBadge();
-    renderQuestion();
-    btn.textContent = '新しい問題を生成する';
-    btn.disabled = false;
-  } catch(e) {
-    container.innerHTML = '<div class="loading">エラーが発生しました。再度お試しください。</div>';
-    btn.textContent = 'AIで問題を生成する';
-    btn.disabled = false;
-  }
+function renderArticles() {
+  const container = document.getElementById('article-section');
+  container.innerHTML = ARTICLES.map(a => `
+    <div class="article-card">
+      <span class="article-tag">${a.tag}</span>
+      <div class="article-title">${a.title}</div>
+      <div class="article-body">${a.body.map(p => `<p>${p}</p>`).join('')}</div>
+    </div>
+  `).join('');
 }
 
 function renderQuestion() {
   const container = document.getElementById('quiz-container');
-  if (currentQ >= quizData.length) {
+  document.getElementById('quiz-status').textContent = `第 ${currentQ + 1} 問 / 全 ${QUESTIONS.length} 問`;
+
+  if (currentQ >= QUESTIONS.length) {
     container.innerHTML = `
       <div class="quiz-card" style="text-align:center;">
         <div style="font-size:2rem; margin-bottom:12px;">🎉</div>
         <div class="quiz-question">全問終了！</div>
-        <div style="font-size:1.1rem; color:var(--accent2); font-weight:700; margin:10px 0;">${score} / ${quizData.length} 問正解</div>
-        <div style="font-size:0.85rem; color:var(--muted);">「新しい問題を生成する」ボタンで次のセットへ</div>
+        <div style="font-size:1.1rem; color:var(--accent2); font-weight:700; margin:10px 0;">${score} / ${QUESTIONS.length} 問正解</div>
+        <button class="restart-btn" onclick="restartQuiz()">もう一度挑戦する</button>
       </div>`;
     return;
   }
 
-  const q = quizData[currentQ];
-  const diffClass = q.difficulty === '易' ? 'diff-easy' : q.difficulty === '普通' ? 'diff-medium' : 'diff-hard';
-
-  document.getElementById('quiz-status').textContent = `第 ${currentQ + 1} 問 / 全 ${quizData.length} 問`;
-
+  const q = QUESTIONS[currentQ];
   container.innerHTML = `
     <div class="quiz-card">
-      <span class="quiz-difficulty ${diffClass}">${q.difficulty}</span>
+      <span class="quiz-difficulty diff-${q.difficulty}">${q.difficulty}</span>
       <div class="quiz-question">${q.question}</div>
       <div class="choices">
         ${q.choices.map((c, i) => `
@@ -460,19 +238,17 @@ function renderQuestion() {
       </div>
       <div class="feedback-box" id="feedback"></div>
       <button class="next-btn" id="next-btn" onclick="nextQuestion()">
-        ${currentQ + 1 < quizData.length ? '次の問題へ →' : '結果を見る'}
+        ${currentQ + 1 < QUESTIONS.length ? '次の問題へ →' : '結果を見る'}
       </button>
     </div>`;
 }
 
 function selectAnswer(idx) {
-  const q = quizData[currentQ];
+  const q = QUESTIONS[currentQ];
   const btns = document.querySelectorAll('.choice-btn');
   btns.forEach(b => b.disabled = true);
-
   const feedback = document.getElementById('feedback');
   const nextBtn = document.getElementById('next-btn');
-
   if (idx === q.answer) {
     btns[idx].classList.add('selected-correct');
     feedback.className = 'feedback-box correct';
@@ -484,20 +260,16 @@ function selectAnswer(idx) {
     feedback.className = 'feedback-box wrong';
     feedback.innerHTML = `<div class="fb-title">❌ 不正解</div>正解は「${String.fromCharCode(65+q.answer)}. ${q.choices[q.answer]}」です。<br><br>${q.explanation}`;
   }
-
   total++;
-  updateScoreBadge();
+  document.getElementById('score-badge').textContent = `${score} / ${total}`;
   nextBtn.style.display = 'block';
 }
 
-function nextQuestion() {
-  currentQ++;
-  renderQuestion();
-}
+function nextQuestion() { currentQ++; renderQuestion(); }
+function restartQuiz() { currentQ = 0; score = 0; total = 0; document.getElementById('score-badge').textContent = '0 / 0'; renderQuestion(); }
 
-function updateScoreBadge() {
-  document.getElementById('score-badge').textContent = `${score} / ${total}`;
-}
+renderArticles();
+renderQuestion();
 </script>
 </body>
 </html>
