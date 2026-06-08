@@ -16,7 +16,8 @@
   header h1{font-family:'Noto Serif JP',serif;font-size:1.05rem;font-weight:700;letter-spacing:.05em;}
   header p{font-size:.68rem;opacity:.75;margin-top:2px;}
   main{max-width:600px;margin:0 auto;padding:16px 14px 80px;}
-  .tabs{display:flex;gap:6px;margin-bottom:18px;}
+  .tabs{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:18px;}
+  .tabs-row{display:flex;gap:6px;}
   .tab{flex:1;padding:9px 4px;border:2px solid var(--border);background:white;border-radius:8px;font-size:.78rem;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all .2s;color:var(--muted);line-height:1.3;}
   .tab.active{border-color:var(--accent2);background:var(--accent2);color:white;font-weight:500;}
   .section{display:none;}.section.active{display:block;}
@@ -106,11 +107,15 @@
   <p>建設部門 ／ 都市及び地方計画</p>
 </header>
 <main>
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('article')">📖 解説記事</button>
-    <button class="tab" onclick="switchTab('theme1')">✏️ 問題演習（Ⅱ-1）</button>
-    <button class="tab" onclick="switchTab('theme')">✏️ 問題演習（Ⅱ-2）</button>
-    <button class="tab" onclick="switchTab('theme3')">✏️ 問題演習（Ⅲ）</button>
+  <div class="tabs" id="main-tabs">
+    <div class="tabs-row">
+      <button class="tab active" onclick="switchTab('article')">📖 解説記事</button>
+    </div>
+    <div class="tabs-row">
+      <button class="tab" onclick="switchTab('theme1')">✏️ 問題演習（Ⅱ-1）</button>
+      <button class="tab" onclick="switchTab('theme')">✏️ 問題演習（Ⅱ-2）</button>
+      <button class="tab" onclick="switchTab('theme3')">✏️ 問題演習（Ⅲ）</button>
+    </div>
   </div>
   <div id="article-section" class="section active">
     <div id="article-list-view">
@@ -535,14 +540,16 @@ let total = 0;
 let selectedAnswers = [];
 
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', (i===0&&tab==='article')||(i===1&&tab==='theme1')||(i===2&&tab==='theme')||(i===3&&tab==='theme3'));
-  });
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tabMap = {article:0, theme1:1, theme:2, theme3:3};
+  document.querySelectorAll('.tab')[tabMap[tab]].classList.add('active');
   document.getElementById('article-section').classList.toggle('active', tab==='article');
   document.getElementById('theme1-section').classList.toggle('active', tab==='theme1');
   document.getElementById('theme-section').classList.toggle('active', tab==='theme');
   document.getElementById('theme3-section').classList.toggle('active', tab==='theme3');
 }
+function hideTabs(){ document.getElementById('main-tabs').style.display='none'; }
+function showTabs(){ document.getElementById('main-tabs').style.display=''; }
 
 function renderArticleList() {
   const list = document.getElementById('article-list');
@@ -603,6 +610,7 @@ function startTheme(themeId) {
   currentQ = 0; score = 0; total = 0; selectedAnswers = [];
   document.getElementById('theme-list-view').style.display = 'none';
   document.getElementById('quiz-view').style.display = 'block';
+  hideTabs();
   renderQuestion();
   window.scrollTo(0, 0);
 }
@@ -610,6 +618,7 @@ function startTheme(themeId) {
 function showThemeList() {
   document.getElementById('theme-list-view').style.display = 'block';
   document.getElementById('quiz-view').style.display = 'none';
+  showTabs();
 }
 
 function renderQuestion() {
@@ -1486,6 +1495,7 @@ function startTheme1(themeId) {
   selectedAnswer1 = null;
   document.getElementById('theme1-list-view').style.display = 'none';
   document.getElementById('quiz1-view').style.display = 'block';
+  hideTabs();
   renderQuestion1();
   window.scrollTo(0, 0);
 }
@@ -1493,6 +1503,7 @@ function startTheme1(themeId) {
 function showThemeList1() {
   document.getElementById('theme1-list-view').style.display = 'block';
   document.getElementById('quiz1-view').style.display = 'none';
+  showTabs();
 }
 
 function renderQuestion1() {
@@ -2056,6 +2067,7 @@ function startTheme3(themeId) {
   currentQ3 = 0; score3 = 0; total3 = 0;
   document.getElementById('theme3-list-view').style.display = 'none';
   document.getElementById('quiz3-view').style.display = 'block';
+  hideTabs();
   renderQuestion3();
   window.scrollTo(0, 0);
 }
@@ -2063,6 +2075,7 @@ function startTheme3(themeId) {
 function showThemeList3() {
   document.getElementById('theme3-list-view').style.display = 'block';
   document.getElementById('quiz3-view').style.display = 'none';
+  showTabs();
 }
 
 function renderQuestion3() {
